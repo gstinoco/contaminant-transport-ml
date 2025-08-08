@@ -1,0 +1,5 @@
+Model,Accuracy,Precision (Macro),Recall (Macro),F1-Score (Macro),Precision (Weighted),Recall (Weighted),F1-Score (Weighted),Precision Low,Recall Low,F1 Low,Precision Medium,Recall Medium,F1 Medium,Precision High,Recall High,F1 High
+RandomForest,0.9627,0.9447,0.8718,0.8999,0.9616,0.9627,0.9598,0.9885,0.9881,0.9883,0.9019,0.6293,0.7414,0.9436,0.9979,0.9700
+SVM,0.9394,0.9153,0.8439,0.8708,0.9376,0.9394,0.9359,0.9574,0.9488,0.9531,0.8571,0.5870,0.6968,0.9312,0.9959,0.9625
+GradientBoosting,0.9893,0.9721,0.9774,0.9748,0.9894,0.9893,0.9893,0.9979,0.9908,0.9943,0.9265,0.9457,0.9360,0.9920,0.9959,0.9939
+LogisticRegression,0.7435,0.4960,0.5407,0.5174,0.6819,0.7435,0.7113,0.7341,0.8040,0.7675,0.0000,0.0000,0.0000,0.7538,0.8181,0.7846

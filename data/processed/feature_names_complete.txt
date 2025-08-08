@@ -1,0 +1,16 @@
+x_position
+y_position
+time_normalized
+distance_to_source
+dx_from_source
+dy_from_source
+travel_time_x
+travel_time_y
+peclet_x
+peclet_y
+velocity_u
+velocity_v
+diffusion_coeff
+source_strength
+conc_gradient_x
+conc_gradient_y

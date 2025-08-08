@@ -1,0 +1,360 @@
+boundary_conditions:
+  type: mixed
+  types:
+    bottom: dirichlet
+    left: dirichlet
+    right: neumann
+    top: dirichlet
+  values:
+    bottom: 0.0
+    left: 0.0
+    right: 0.0
+    top: 0.0
+domain:
+  dt: 0.05
+  dx: 5.0
+  dy: 0.25
+  length_x: 200.0
+  length_y: 10.0
+  total_time: 300.0
+ml_parameters:
+  algorithms:
+  - RandomForest
+  - SVM
+  - GradientBoosting
+  - LogisticRegression
+  cross_validation_folds: 5
+  random_forest:
+    max_depth: 10
+    min_samples_leaf: 2
+    min_samples_split: 5
+    n_estimators: 100
+  random_state: 42
+  test_size: 0.2
+physics:
+  advection_velocity:
+    u: 0.5
+    v: 0.0
+  decay_rate: 0.001
+  diffusion_coefficient: 0.1
+  source_duration: 60.0
+  source_strength: 100.0
+risk_thresholds:
+  low: 0.001
+  medium: 0.01
+scenarios:
+- boundary_type: mixed
+  description: Normal conditions with free outlet - Source at (20, 1)
+  name: baseline_lower
+  source_strength: 200.0
+  velocity:
+    u: 0.5
+    v: 0.01
+- boundary_type: mixed
+  description: Very high flow conditions - Source at (20, 1)
+  name: very_high_flow_lower
+  source_strength: 200.0
+  velocity:
+    u: 1.5
+    v: 0.025
+- boundary_type: mixed
+  description: High flow conditions - Source at (20, 1)
+  name: high_flow_lower
+  source_strength: 200.0
+  velocity:
+    u: 1.0
+    v: 0.02
+- boundary_type: mixed
+  description: Moderate flow conditions - Source at (20, 1)
+  name: moderate_flow_lower
+  source_strength: 200.0
+  velocity:
+    u: 0.7
+    v: 0.015
+- boundary_type: mixed
+  description: Low flow conditions - Source at (20, 1)
+  name: low_flow_lower
+  source_strength: 200.0
+  velocity:
+    u: 0.2
+    v: 0.005
+- boundary_type: mixed
+  description: Very low flow conditions - Source at (20, 1)
+  name: very_low_flow_lower
+  source_strength: 200.0
+  velocity:
+    u: 0.1
+    v: 0.0025
+- boundary_type: mixed
+  description: Very high intensity discharge - Source at (20, 1)
+  name: very_high_discharge_lower
+  source_strength: 800.0
+  velocity:
+    u: 0.5
+    v: 0.01
+- boundary_type: mixed
+  description: High intensity discharge - Source at (20, 1)
+  name: high_discharge_lower
+  source_strength: 400.0
+  velocity:
+    u: 0.5
+    v: 0.01
+- boundary_type: mixed
+  description: Medium intensity discharge - Source at (20, 1)
+  name: medium_discharge_lower
+  source_strength: 200.0
+  velocity:
+    u: 0.5
+    v: 0.01
+- boundary_type: mixed
+  description: Low intensity discharge - Source at (20, 1)
+  name: low_discharge_lower
+  source_strength: 100.0
+  velocity:
+    u: 0.5
+    v: 0.01
+- boundary_type: mixed
+  description: Very low intensity discharge - Source at (20, 1)
+  name: very_low_discharge_lower
+  source_strength: 50.0
+  velocity:
+    u: 0.5
+    v: 0.01
+- boundary_type: mixed
+  description: Normal conditions with free outlet - Source at (1,5)
+  name: baseline_left_center
+  source_location:
+    x: 1.0
+    y: 5.0
+  source_strength: 200.0
+  velocity:
+    u: 0.5
+    v: 0.0
+- boundary_type: mixed
+  description: Very high flow conditions - Source at (1,5)
+  name: very_high_flow_left_center
+  source_location:
+    x: 1.0
+    y: 5.0
+  source_strength: 200.0
+  velocity:
+    u: 1.5
+    v: 0.0
+- boundary_type: mixed
+  description: High flow conditions - Source at (1,5)
+  name: high_flow_left_center
+  source_location:
+    x: 1.0
+    y: 5.0
+  source_strength: 200.0
+  velocity:
+    u: 1.0
+    v: 0.0
+- boundary_type: mixed
+  description: Moderate flow conditions - Source at (1,5)
+  name: moderate_flow_left_center
+  source_location:
+    x: 1.0
+    y: 5.0
+  source_strength: 200.0
+  velocity:
+    u: 0.7
+    v: 0.0
+- boundary_type: mixed
+  description: Low flow conditions - Source at (1,5)
+  name: low_flow_left_center
+  source_location:
+    x: 1.0
+    y: 5.0
+  source_strength: 200.0
+  velocity:
+    u: 0.2
+    v: 0.0
+- boundary_type: mixed
+  description: Very low flow conditions - Source at (1,5)
+  name: very_low_flow_left_center
+  source_location:
+    x: 1.0
+    y: 5.0
+  source_strength: 200.0
+  velocity:
+    u: 0.1
+    v: 0.0
+- boundary_type: mixed
+  description: Very high intensity discharge - Source at (1,5)
+  name: very_high_discharge_left_center
+  source_location:
+    x: 1.0
+    y: 5.0
+  source_strength: 800.0
+  velocity:
+    u: 0.5
+    v: 0.0
+- boundary_type: mixed
+  description: High intensity discharge - Source at (1,5)
+  name: high_discharge_left_center
+  source_location:
+    x: 1.0
+    y: 5.0
+  source_strength: 400.0
+  velocity:
+    u: 0.5
+    v: 0.0
+- boundary_type: mixed
+  description: Medium intensity discharge - Source at (1,5)
+  name: medium_discharge_left_center
+  source_location:
+    x: 1.0
+    y: 5.0
+  source_strength: 200.0
+  velocity:
+    u: 0.5
+    v: 0.0
+- boundary_type: mixed
+  description: Low intensity discharge - Source at (1,5)
+  name: low_discharge_left_center
+  source_location:
+    x: 1.0
+    y: 5.0
+  source_strength: 100.0
+  velocity:
+    u: 0.5
+    v: 0.0
+- boundary_type: mixed
+  description: Very low intensity discharge - Source at (1,5)
+  name: very_low_discharge_left_center
+  source_location:
+    x: 1.0
+    y: 5.0
+  source_strength: 50.0
+  velocity:
+    u: 0.5
+    v: 0.0
+- boundary_type: mixed
+  description: Normal conditions with free outlet - Source at (20,9)
+  name: baseline_upper
+  source_location:
+    x: 20.0
+    y: 9.0
+  source_strength: 200.0
+  velocity:
+    u: 0.5
+    v: -0.01
+- boundary_type: mixed
+  description: Very high flow conditions - Source at (20,9)
+  name: very_high_flow_upper
+  source_location:
+    x: 20.0
+    y: 9.0
+  source_strength: 200.0
+  velocity:
+    u: 1.5
+    v: -0.025
+- boundary_type: mixed
+  description: High flow conditions - Source at (20,9)
+  name: high_flow_upper
+  source_location:
+    x: 20.0
+    y: 9.0
+  source_strength: 200.0
+  velocity:
+    u: 1.0
+    v: -0.02
+- boundary_type: mixed
+  description: Moderate flow conditions - Source at (20,9)
+  name: moderate_flow_upper
+  source_location:
+    x: 20.0
+    y: 9.0
+  source_strength: 200.0
+  velocity:
+    u: 0.7
+    v: -0.015
+- boundary_type: mixed
+  description: Low flow conditions - Source at (20,9)
+  name: low_flow_upper
+  source_location:
+    x: 20.0
+    y: 9.0
+  source_strength: 200.0
+  velocity:
+    u: 0.2
+    v: -0.005
+- boundary_type: mixed
+  description: Very low flow conditions - Source at (20,9)
+  name: very_low_flow_upper
+  source_location:
+    x: 20.0
+    y: 9.0
+  source_strength: 200.0
+  velocity:
+    u: 0.1
+    v: -0.0025
+- boundary_type: mixed
+  description: Very high intensity discharge - Source at (20,9)
+  name: very_high_discharge_upper
+  source_location:
+    x: 20.0
+    y: 9.0
+  source_strength: 800.0
+  velocity:
+    u: 0.5
+    v: -0.01
+- boundary_type: mixed
+  description: High intensity discharge - Source at (20,9)
+  name: high_discharge_upper
+  source_location:
+    x: 20.0
+    y: 9.0
+  source_strength: 400.0
+  velocity:
+    u: 0.5
+    v: -0.01
+- boundary_type: mixed
+  description: Medium intensity discharge - Source at (20,9)
+  name: medium_discharge_upper
+  source_location:
+    x: 20.0
+    y: 9.0
+  source_strength: 200.0
+  velocity:
+    u: 0.5
+    v: -0.01
+- boundary_type: mixed
+  description: Low intensity discharge - Source at (20,9)
+  name: low_discharge_upper
+  source_location:
+    x: 20.0
+    y: 9.0
+  source_strength: 100.0
+  velocity:
+    u: 0.5
+    v: -0.01
+- boundary_type: mixed
+  description: Very low intensity discharge - Source at (20,9)
+  name: very_low_discharge_upper
+  source_location:
+    x: 20.0
+    y: 9.0
+  source_strength: 50.0
+  velocity:
+    u: 0.5
+    v: -0.01
+source:
+  duration: 60.0
+  location:
+    x: 1.0
+    y: 5.0
+  strength: 100.0
+visualization:
+  animation:
+    dpi_video: 150
+    fps: 15
+    frame_skip: 1
+    max_frames: 100
+  colormap: viridis
+  contour_levels: 20
+  dpi: 300
+  figure_size:
+  - 12
+  - 8

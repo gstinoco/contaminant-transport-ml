@@ -1,0 +1,365 @@
+# =============================================================================
+# CONTAMINANT TRANSPORT SIMULATION AND MACHINE LEARNING ANALYSIS CONFIGURATION
+# =============================================================================
+# This configuration file contains all parameters for:
+# - 2D advection-diffusion numerical simulation
+# - Machine learning risk classification
+# - Visualization and analysis settings
+# - Predefined simulation scenarios
+# =============================================================================
+
+# =============================================================================
+# COMPUTATIONAL DOMAIN PARAMETERS
+# =============================================================================
+# Defines the 2D computational grid for finite difference simulation
+domain:
+  length_x: 200.0                       # Domain length in x-direction (meters) - represents river length
+  length_y: 10.0                        # Domain length in y-direction (meters) - represents river width
+  dx: 5.0                               # Grid spacing in x-direction (meters) - spatial resolution
+  dy: 0.25                              # Grid spacing in y-direction (meters) - spatial resolution
+  dt: 0.05                              # Time step size (seconds) - temporal resolution for numerical stability
+  total_time: 300.0                     # Total simulation time (seconds) - duration of contaminant transport
+
+# =============================================================================
+# PHYSICAL PARAMETERS FOR ADVECTION-DIFFUSION EQUATION
+# =============================================================================
+# Controls the transport mechanisms: advection, diffusion, and decay
+physics:
+  diffusion_coefficient: 0.1            # Molecular diffusion coefficient (m²/s) - contaminant spreading rate
+  advection_velocity:
+    u: 0.5                              # Velocity component in x-direction (m/s) - downstream flow
+    v: 0.1                              # Velocity component in y-direction (m/s) - cross-stream flow
+  decay_rate: 0.001                     # First-order decay rate (1/s) - contaminant degradation
+  source_strength: 100.0                # Source term strength (mg/L/s) - contaminant emission rate
+  source_duration: 60.0                 # Duration of contaminant release (seconds)
+
+# =============================================================================
+# CONTAMINANT SOURCE CONFIGURATION
+# =============================================================================
+# Defines the location and characteristics of the pollution source
+source:
+  location:
+    x: 20.0                             # Source x-coordinate (meters) - distance from upstream boundary
+    y: 1.0                              # Source y-coordinate (meters) - distance from bottom boundary
+  strength: 100.0                       # Source strength (mg/L/s) - contaminant emission rate
+  duration: 60.0                        # Source duration (seconds) - active release period
+
+# =============================================================================
+# BOUNDARY CONDITIONS FOR COMPUTATIONAL DOMAIN
+# =============================================================================
+# Defines how contaminant behaves at domain boundaries
+boundary_conditions:
+  type: "mixed"                         # Overall boundary condition type: "dirichlet", "neumann", or "mixed"
+  # For "mixed" type, specify individual boundary types
+  # Dirichlet: fixed concentration value
+  # Neumann: fixed concentration gradient (flux)
+  types:
+    left: "dirichlet"                   # Left boundary (upstream) - fixed concentration
+    right: "neumann"                    # Right boundary (downstream) - free outlet (∂C/∂x = 0)
+    top: "dirichlet"                    # Top boundary - fixed concentration
+    bottom: "dirichlet"                 # Bottom boundary - fixed concentration
+  values:
+    left: 0.0                           # Left boundary value - clean water inlet (mg/L)
+    right: 0.0                          # Right boundary gradient - free outlet condition
+    top: 0.0                            # Top boundary value - clean water (mg/L)
+    bottom: 0.0                         # Bottom boundary value - clean water (mg/L)
+
+# =============================================================================
+# ECOLOGICAL RISK ASSESSMENT THRESHOLDS
+# =============================================================================
+# Concentration levels for environmental risk classification
+risk_thresholds:
+  low: 0.001                            # Low risk threshold (mg/L) - minimal environmental impact
+  medium: 0.01                          # Medium risk threshold (mg/L) - moderate environmental concern
+                                        # Note: Values above medium threshold are classified as high risk
+
+# =============================================================================
+# MACHINE LEARNING CONFIGURATION
+# =============================================================================
+# Parameters for training and evaluating risk classification models
+ml_parameters:
+  test_size: 0.2                        # Proportion of data used for testing (0.0-1.0)
+  random_state: 42                      # Random seed for reproducibility across runs
+  cross_validation_folds: 5             # Number of folds for k-fold cross-validation
+  
+  # Available algorithms for risk classification
+  algorithms:
+    - "RandomForest"                    # Random Forest ensemble method
+    - "SVM"                             # Support Vector Machine
+    - "GradientBoosting"                # Gradient Boosting ensemble method
+    - "LogisticRegression"              # Logistic Regression
+  
+  # Hyperparameters for Random Forest classifier
+  random_forest:
+    n_estimators: 100                   # Number of decision trees in the forest
+    max_depth: 10                       # Maximum depth of each tree (prevents overfitting)
+    min_samples_split: 5                # Minimum samples required to split an internal node
+    min_samples_leaf: 2                 # Minimum samples required at a leaf node
+
+# =============================================================================
+# VISUALIZATION SETTINGS
+# =============================================================================
+# Configuration for plots, animations, and figure output
+visualization:
+  colormap: "viridis"                   # Colormap for concentration plots (perceptually uniform)
+  figure_size: [12, 8]                  # Figure size [width, height] in inches
+  dpi: 300                              # Resolution for saved figures (dots per inch)
+  contour_levels: 20                    # Number of contour levels for concentration plots
+  
+  # Animation settings for video generation
+  animation:
+    fps: 15                             # Frames per second for videos (higher = smoother but slower)
+    dpi_video: 150                      # Lower DPI for videos to speed up generation
+    max_frames: 100                     # Maximum number of frames to include in videos
+    frame_skip: 1                       # Skip frames to reduce video length (1 = no skip)
+  
+# =============================================================================
+# PREDEFINED SIMULATION SCENARIOS
+# =============================================================================
+# Comprehensive collection of scenarios for environmental risk analysis
+# Scenarios are organized by source location and test different conditions:
+# - Flow velocities (very low to very high)
+# - Discharge intensities (very low to very high)
+# - Source positions (lower, left-center, upper)
+# =============================================================================
+
+scenarios:
+  # =============================================================================
+  # SCENARIOS WITH SOURCE AT LOWER POSITION (20, 1)
+  # =============================================================================
+  # Source located near the bottom boundary, 20m downstream from inlet
+  # Tests contaminant behavior with bottom-side discharge
+  
+  - name: "baseline_lower"
+    description: "Normal conditions with free outlet - Source at (20, 1)"
+    velocity: {u: 0.5, v: 0.01}         # Moderate downstream flow with slight upward component
+    source_strength: 200.0              # Standard discharge rate (mg/L/s)
+    boundary_type: "mixed"              # Mixed boundary conditions  
+  
+  - name: "very_high_flow_lower"
+    description: "Very high flow conditions - Source at (20, 1)"
+    velocity: {u: 1.5, v: 0.025}        # High downstream velocity, increased cross-flow
+    source_strength: 200.0              # Standard discharge rate
+    boundary_type: "mixed"              # Mixed boundary conditions  
+  
+  - name: "high_flow_lower"
+    description: "High flow conditions - Source at (20, 1)"
+    velocity: {u: 1.0, v: 0.02}         # High downstream velocity
+    source_strength: 200.0              # Standard discharge rate
+    boundary_type: "mixed"              # Mixed boundary conditions  
+  
+  - name: "moderate_flow_lower"
+    description: "Moderate flow conditions - Source at (20, 1)"
+    velocity: {u: 0.7, v: 0.015}        # Moderate-high downstream velocity
+    source_strength: 200.0              # Standard discharge rate
+    boundary_type: "mixed"              # Mixed boundary conditions  
+  
+  - name: "low_flow_lower"
+    description: "Low flow conditions - Source at (20, 1)"
+    velocity: {u: 0.2, v: 0.005}        # Low downstream velocity, minimal cross-flow
+    source_strength: 200.0              # Standard discharge rate
+    boundary_type: "mixed"              # Mixed boundary conditions  
+  
+  - name: "very_low_flow_lower"
+    description: "Very low flow conditions - Source at (20, 1)"
+    velocity: {u: 0.1, v: 0.0025}       # Very low downstream velocity
+    source_strength: 200.0              # Standard discharge rate
+    boundary_type: "mixed"              # Mixed boundary conditions  
+
+  - name: "very_high_discharge_lower"
+    description: "Very high intensity discharge - Source at (20, 1)"
+    velocity: {u: 0.5, v: 0.01}         # Standard flow conditions
+    source_strength: 800.0              # Very high discharge rate (4x standard)
+    boundary_type: "mixed"              # Mixed boundary conditions  
+  
+  - name: "high_discharge_lower"
+    description: "High intensity discharge - Source at (20, 1)"
+    velocity: {u: 0.5, v: 0.01}         # Standard flow conditions
+    source_strength: 400.0              # High discharge rate (2x standard)
+    boundary_type: "mixed"              # Mixed boundary conditions  
+  
+  - name: "medium_discharge_lower"
+    description: "Medium intensity discharge - Source at (20, 1)"
+    velocity: {u: 0.5, v: 0.01}         # Standard flow conditions
+    source_strength: 200.0              # Standard discharge rate
+    boundary_type: "mixed"              # Mixed boundary conditions  
+  
+  - name: "low_discharge_lower"
+    description: "Low intensity discharge - Source at (20, 1)"
+    velocity: {u: 0.5, v: 0.01}         # Standard flow conditions
+    source_strength: 100.0              # Low discharge rate (0.5x standard)
+    boundary_type: "mixed"              # Mixed boundary conditions  
+  
+  - name: "very_low_discharge_lower"
+    description: "Very low intensity discharge - Source at (20, 1)"
+    velocity: {u: 0.5, v: 0.01}         # Standard flow conditions
+    source_strength: 50.0               # Very low discharge rate (0.25x standard)
+    boundary_type: "mixed"              # Mixed boundary conditions
+
+  # =============================================================================
+  # SCENARIOS WITH SOURCE AT LEFT-CENTER POSITION (1, 5)
+  # =============================================================================
+  # Source located at the center of the left boundary (river centerline)
+  # Tests contaminant behavior with upstream discharge near inlet
+  # Pure downstream flow (v=0) to study longitudinal transport
+  
+  - name: "baseline_left_center"
+    description: "Normal conditions with free outlet - Source at (1,5)"
+    velocity: {u: 0.5, v: 0.0}          # Pure downstream flow, no cross-stream component
+    source_strength: 200.0              # Standard discharge rate (mg/L/s)
+    source_location: {x: 1.0, y: 5.0}   # Near inlet, river centerline
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "very_high_flow_left_center"
+    description: "Very high flow conditions - Source at (1,5)"
+    velocity: {u: 1.5, v: 0.0}          # Very high downstream velocity
+    source_strength: 200.0              # Standard discharge rate
+    source_location: {x: 1.0, y: 5.0}   # Near inlet, river centerline
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "high_flow_left_center"
+    description: "High flow conditions - Source at (1,5)"
+    velocity: {u: 1.0, v: 0.0}          # High downstream velocity
+    source_strength: 200.0              # Standard discharge rate
+    source_location: {x: 1.0, y: 5.0}   # Near inlet, river centerline
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "moderate_flow_left_center"
+    description: "Moderate flow conditions - Source at (1,5)"
+    velocity: {u: 0.7, v: 0.0}          # Moderate-high downstream velocity
+    source_strength: 200.0              # Standard discharge rate
+    source_location: {x: 1.0, y: 5.0}   # Near inlet, river centerline
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "low_flow_left_center"
+    description: "Low flow conditions - Source at (1,5)"
+    velocity: {u: 0.2, v: 0.0}          # Low downstream velocity
+    source_strength: 200.0              # Standard discharge rate
+    source_location: {x: 1.0, y: 5.0}   # Near inlet, river centerline
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "very_low_flow_left_center"
+    description: "Very low flow conditions - Source at (1,5)"
+    velocity: {u: 0.1, v: 0.0}          # Very low downstream velocity
+    source_strength: 200.0              # Standard discharge rate
+    source_location: {x: 1.0, y: 5.0}   # Near inlet, river centerline
+    boundary_type: "mixed"              # Mixed boundary conditions
+
+  - name: "very_high_discharge_left_center"
+    description: "Very high intensity discharge - Source at (1,5)"
+    velocity: {u: 0.5, v: 0.0}          # Standard flow conditions
+    source_strength: 800.0              # Very high discharge rate (4x standard)
+    source_location: {x: 1.0, y: 5.0}   # Near inlet, river centerline
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "high_discharge_left_center"
+    description: "High intensity discharge - Source at (1,5)"
+    velocity: {u: 0.5, v: 0.0}          # Standard flow conditions
+    source_strength: 400.0              # High discharge rate (2x standard)
+    source_location: {x: 1.0, y: 5.0}   # Near inlet, river centerline
+    boundary_type: "mixed"
+  
+  - name: "medium_discharge_left_center"
+    description: "Medium intensity discharge - Source at (1,5)"
+    velocity: {u: 0.5, v: 0.0}          # Standard flow conditions
+    source_strength: 200.0              # Standard discharge rate
+    source_location: {x: 1.0, y: 5.0}   # Near inlet, river centerline
+    boundary_type: "mixed"
+  
+  - name: "low_discharge_left_center"
+    description: "Low intensity discharge - Source at (1,5)"
+    velocity: {u: 0.5, v: 0.0}          # Standard flow conditions
+    source_strength: 100.0              # Low discharge rate (0.5x standard)
+    source_location: {x: 1.0, y: 5.0}   # Near inlet, river centerline
+    boundary_type: "mixed"
+  
+  - name: "very_low_discharge_left_center"
+    description: "Very low intensity discharge - Source at (1,5)"
+    velocity: {u: 0.5, v: 0.0}          # Standard flow conditions
+    source_strength: 50.0               # Very low discharge rate (0.25x standard)
+    source_location: {x: 1.0, y: 5.0}   # Near inlet, river centerline
+    boundary_type: "mixed"
+
+  # =============================================================================
+  # SCENARIOS WITH SOURCE AT UPPER POSITION (20, 9)
+  # =============================================================================
+  # Source located near the top boundary, 20m downstream from inlet
+  # Tests contaminant behavior with top-side discharge
+  # Negative v-velocity component simulates downward cross-flow
+  
+  - name: "baseline_upper"
+    description: "Normal conditions with free outlet - Source at (20,9)"
+    velocity: {u: 0.5, v: -0.01}        # Moderate downstream flow with downward component
+    source_strength: 200.0              # Standard discharge rate (mg/L/s)
+    source_location: {x: 20.0, y: 9.0}  # Near top boundary, 20m downstream
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "very_high_flow_upper"
+    description: "Very high flow conditions - Source at (20,9)"
+    velocity: {u: 1.5, v: -0.025}       # Very high downstream velocity, increased downward flow
+    source_strength: 200.0              # Standard discharge rate
+    source_location: {x: 20.0, y: 9.0}  # Near top boundary, 20m downstream
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "high_flow_upper"
+    description: "High flow conditions - Source at (20,9)"
+    velocity: {u: 1.0, v: -0.02}        # High downstream velocity, moderate downward flow
+    source_strength: 200.0              # Standard discharge rate
+    source_location: {x: 20.0, y: 9.0}  # Near top boundary, 20m downstream
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "moderate_flow_upper"
+    description: "Moderate flow conditions - Source at (20,9)"
+    velocity: {u: 0.7, v: -0.015}       # Moderate-high downstream velocity
+    source_strength: 200.0              # Standard discharge rate
+    source_location: {x: 20.0, y: 9.0}  # Near top boundary, 20m downstream
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "low_flow_upper"
+    description: "Low flow conditions - Source at (20,9)"
+    velocity: {u: 0.2, v: -0.005}       # Low downstream velocity, minimal downward flow
+    source_strength: 200.0              # Standard discharge rate
+    source_location: {x: 20.0, y: 9.0}  # Near top boundary, 20m downstream
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "very_low_flow_upper"
+    description: "Very low flow conditions - Source at (20,9)"
+    velocity: {u: 0.1, v: -0.0025}      # Very low downstream velocity
+    source_strength: 200.0              # Standard discharge rate
+    source_location: {x: 20.0, y: 9.0}  # Near top boundary, 20m downstream
+    boundary_type: "mixed"              # Mixed boundary conditions
+
+  - name: "very_high_discharge_upper"
+    description: "Very high intensity discharge - Source at (20,9)"
+    velocity: {u: 0.5, v: -0.01}        # Standard flow conditions
+    source_strength: 800.0              # Very high discharge rate (4x standard)
+    source_location: {x: 20.0, y: 9.0}  # Near top boundary, 20m downstream
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "high_discharge_upper"
+    description: "High intensity discharge - Source at (20,9)"
+    velocity: {u: 0.5, v: -0.01}        # Standard flow conditions
+    source_strength: 400.0              # High discharge rate (2x standard)
+    source_location: {x: 20.0, y: 9.0}  # Near top boundary, 20m downstream
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "medium_discharge_upper"
+    description: "Medium intensity discharge - Source at (20,9)"
+    velocity: {u: 0.5, v: -0.01}        # Standard flow conditions
+    source_strength: 200.0              # Standard discharge rate
+    source_location: {x: 20.0, y: 9.0}  # Near top boundary, 20m downstream
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "low_discharge_upper"
+    description: "Low intensity discharge - Source at (20,9)"
+    velocity: {u: 0.5, v: -0.01}        # Standard flow conditions
+    source_strength: 100.0              # Low discharge rate (0.5x standard)
+    source_location: {x: 20.0, y: 9.0}  # Near top boundary, 20m downstream
+    boundary_type: "mixed"              # Mixed boundary conditions
+  
+  - name: "very_low_discharge_upper"
+    description: "Very low intensity discharge - Source at (20,9)"
+    velocity: {u: 0.5, v: -0.01}        # Standard flow conditions
+    source_strength: 50.0               # Very low discharge rate (0.25x standard)
+    source_location: {x: 20.0, y: 9.0}  # Near top boundary, 20m downstream
+    boundary_type: "mixed"              # Mixed boundary conditions
