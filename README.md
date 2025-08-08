@@ -153,7 +153,7 @@ python main.py --help
 ### :zap: Complete Workflow (Recommended)
 ```bash
 # Run full analysis pipeline
-python main.py
+python main.py --complete
 ```
 
 ### :building_construction: Individual Components
@@ -177,10 +177,10 @@ python main.py --create-videos
 ### :gear: Feature Set Options
 ```bash
 # Use fundamental features (8 features)
-python main.py --fundamental-features
+python main.py --complete--fundamental-features
 
 # Use complete features (16 features) - default
-python main.py
+python main.py --complete
 ```
 
 ### :wrench: Advanced Usage Examples
@@ -518,19 +518,19 @@ risk_thresholds:
 
 | Algorithm | Accuracy | Precision | Recall | F1-Score | Training Time |
 |-----------|----------|-----------|--------|----------|---------------|
-| **Random Forest** :deciduous_tree: | **0.9876** | **0.9879** | **0.9876** | **0.9877** | 2.3s |
-| **Gradient Boosting** :rocket: | 0.9851 | 0.9854 | 0.9851 | 0.9852 | 8.7s |
-| **SVM** :dart: | 0.9826 | 0.9829 | 0.9826 | 0.9827 | 15.2s |
-| **Logistic Regression** :chart_with_upwards_trend: | 0.9777 | 0.9781 | 0.9777 | 0.9778 | 0.8s |
+| **Gradient Boosting** :rocket: | **0.9997** | **0.9992** | **0.9995** | **0.9994** | 8.7s |
+| **Random Forest** :deciduous_tree: | 0.9968 | 0.9951 | 0.9893 | 0.9922 | 2.3s |
+| **SVM** :dart: | 0.9625 | 0.9358 | 0.9167 | 0.9256 | 15.2s |
+| **Logistic Regression** :chart_with_upwards_trend: | 0.8662 | 0.5779 | 0.6301 | 0.6029 | 0.8s |
 
 ### :gear: Model Performance (Fundamental Features)
 
 | Algorithm | Accuracy | Precision | Recall | F1-Score | Training Time |
 |-----------|----------|-----------|--------|----------|---------------|
-| **Random Forest** :deciduous_tree: | **0.9851** | **0.9854** | **0.9851** | **0.9852** | 1.8s |
-| **Gradient Boosting** :rocket: | 0.9826 | 0.9829 | 0.9826 | 0.9827 | 6.4s |
-| **SVM** :dart: | 0.9801 | 0.9804 | 0.9801 | 0.9802 | 11.7s |
-| **Logistic Regression** :chart_with_upwards_trend: | 0.9752 | 0.9756 | 0.9752 | 0.9753 | 0.6s |
+| **Gradient Boosting** :rocket: | **0.9893** | **0.9721** | **0.9774** | **0.9748** | 6.4s |
+| **Random Forest** :deciduous_tree: | 0.9627 | 0.9447 | 0.8718 | 0.8999 | 1.8s |
+| **SVM** :dart: | 0.9394 | 0.9153 | 0.8439 | 0.8708 | 11.7s |
+| **Logistic Regression** :chart_with_upwards_trend: | 0.7435 | 0.4960 | 0.5407 | 0.5174 | 0.6s |
 
 ### :microscope: Feature Importance Analysis
 
@@ -549,21 +549,22 @@ risk_thresholds:
 
 | Output Type | Quantity | Description |
 |-------------|----------|-------------|
-| **Simulation Data** :ocean: | 3,300 fields | 33 scenarios × 100 time steps |
+| **Simulation Data** :ocean: | 198,000 fields | 33 scenarios × 6,000 time steps |
 | **ML Datasets** :robot: | 2 versions | Complete (16 features) + Fundamental (8 features) |
 | **Trained Models** :brain: | 8 models | 4 algorithms × 2 feature sets |
-| **Visualizations** :art: | 6 dashboards | Performance metrics, confusion matrices, feature importance |
-| **Animations** :movie_camera: | 66 GIF files | Concentration + risk evolution for each scenario |
+| **Visualizations** :art: | 3 dashboards | Performance metrics, confusion matrices, feature importance |
+| **Animations** :movie_camera: | 66 GIF files | Concentration + risk evolution for each scenario (33 × 2) |
+| **Snapshots** :camera: | 264 images | Detailed concentration field visualizations |
 | **Reports** :clipboard: | 2 CSV files | Comprehensive metrics comparison |
 
 ### :dart: Performance Benchmarks
 
-| Metric | Complete Features | Fundamental Features | Improvement |
+| Metric | Complete Features | Fundamental Features | Difference |
 |--------|------------------|---------------------|-------------|
-| **Best Accuracy** | 98.76% | 98.51% | +0.25% |
-| **Average F1-Score** | 98.34% | 98.08% | +0.26% |
-| **Training Time** | 6.75s avg | 5.15s avg | -24% faster |
-| **Model Size** | 2.3 MB avg | 1.8 MB avg | -22% smaller |
+| **Best Accuracy** | 99.97% (Gradient Boosting) | 98.93% (Gradient Boosting) | +1.05% |
+| **Average F1-Score** | 88.00% | 81.57% | +7.88% |
+| **Training Time** | 6.75s avg | 5.12s avg | -24.1% faster |
+| **Model Size** | 4.5 MB | 5.7 MB | +26.7% |
 
 ---
 
@@ -750,13 +751,27 @@ If you use this software in your research, please cite:
 This project is licensed under the **MIT License** - see the full license text below:
 
 ```
-MIT License - Copyright (c) 2025 Gerardo Tinoco-Guerrero, Francisco Javier Domínguez-Mota, José Alberto Guzmán-Torres
+MIT License
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software.
+Copyright (c) 2025 Gerardo Tinoco-Guerrero, Francisco Javier Domínguez-Mota, José Alberto Guzmán-Torres
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 **Academic Use:** This software is developed for research and educational purposes. Commercial use requires explicit permission from the authors.
